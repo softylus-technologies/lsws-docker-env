@@ -1,7 +1,6 @@
-ARG LSWS_VERSION
 ARG PHP_VERSION
 
-FROM litespeedtech/litespeed:${LSWS_VERSION}-${PHP_VERSION}
+FROM litespeedtech/litespeed:6.3-${PHP_VERSION}
 
 # Set working directory
 WORKDIR /var/www/vhosts
