@@ -6,7 +6,7 @@ services:
     volumes:
       - "./data/db:/var/lib/mysql:delegated"
     ports:
-       - "3306:3306"
+       - "3386:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -14,7 +14,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always  
   litespeed:
-    image: litespeedtech/litespeed:1.7.17-php81
+    image: litespeedtech/openlitespeed:1.7.16-lsphp81
     volumes:
         - ./lsws/conf:/usr/local/lsws/conf
         - ./lsws/admin/conf:/usr/local/lsws/admin/conf
@@ -33,9 +33,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     ports:
-      - 8080:80
+      - 8680:80
     environment:
       - PMA_HOST=mysql
     restart: always
-
-
