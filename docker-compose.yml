@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: mariadb:10.11
+    image: mariadb:10.5.9
     command: --max_allowed_packet=256M --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - "./data/db:/var/lib/mysql:delegated"
@@ -14,7 +14,9 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always  
   litespeed:
-    image: litespeedtech/openlitespeed:1.7.16-lsphp81
+    image: litespeedtech/litespeed:${LSWS_VERSION}-${PHP_VERSION}
+    env_file:
+      - .env
     volumes:
         - ./lsws/conf:/usr/local/lsws/conf
         - ./lsws/admin/conf:/usr/local/lsws/admin/conf
@@ -30,10 +32,18 @@ services:
     restart: always
     environment:
       TZ: ${TimeZone}
+    command: >
+      sh -c "
+        curl https://get.acme.sh | sh -s email=${ACME_EMAIL} &&
+        source /root/.acme.sh/acme.sh.env &&
+        /usr/local/lsws/bin/lswsctrl start &&
+        tail -f /usr/local/lsws/logs/error.log
+      "
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin/phpmyadmin:latest
     ports:
       - 18081:80
     environment:
-      - PMA_HOST=mysql
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     restart: always
