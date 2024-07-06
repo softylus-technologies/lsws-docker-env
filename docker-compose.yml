@@ -33,7 +33,6 @@ services:
       - 18443:443
       - 18443:443/udp
       - 17080:7080
-    restart: always
     environment:
       TZ: ${TimeZone}
     command: >
