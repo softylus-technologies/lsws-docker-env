@@ -17,6 +17,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.litespeed
+      args:
+        - LSWS_VERSION=${LSWS_VERSION}
+        - PHP_VERSION=${PHP_VERSION}
     env_file:
       - .env
     volumes:
